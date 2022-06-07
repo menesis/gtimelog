@@ -918,6 +918,12 @@ class TimeLog(TimeCollection):
             else:
                 with open(self.filename, 'rb') as f:
                     data = f.read()
+                if not data:
+                    # try again
+                    import time
+                    time.sleep(0.3)
+                    with open(self.filename, 'rb') as f:
+                        data = f.read()
                 self.items = self._read(data.decode('UTF-8').splitlines())
         except IOError:
             self.items = []
